@@ -6,16 +6,14 @@ package main
 import (
 	"encoding/base32"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"os"
 )
 
 func main() {
-	b, err := ioutil.ReadAll(os.Stdin)
-	if err != nil {
+	enc := base32.NewEncoder(base32.StdEncoding, os.Stdout)
+	if _, err := io.Copy(enc, os.Stdin); err != nil {
 		fmt.Fprintf(os.Stderr, "%s\n", err)
-		return
+		os.Exit(1)
 	}
-	fmt.Println(base32.StdEncoding.EncodeToString(b))
-
 }
