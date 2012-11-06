@@ -13,7 +13,7 @@ import (
 func main() {
 	b, err := ioutil.ReadAll(os.Stdin)
 	if err != nil {
-		fmt.Printf("%s\n", err)
+		fmt.Fprintf(os.Stderr, "%s\n", err)
 		return
 	}
 	fmt.Println(base32.StdEncoding.EncodeToString(b))
