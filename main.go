@@ -1,3 +1,6 @@
+// Public domain.
+
+// Encodes things read from stdin into base32.
 package main
 
 import (
