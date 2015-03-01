@@ -4,11 +4,10 @@
 package main
 
 import (
-	"bytes"
 	"encoding/base32"
 	"flag"
 	"fmt"
-	"io"
+	"io/ioutil"
 	"os"
 	"strings"
 )
@@ -20,14 +19,12 @@ var (
 
 func main() {
 	flag.Parse()
-	var b bytes.Buffer
-	enc := base32.NewEncoder(base32.StdEncoding, &b)
-	if _, err := io.Copy(enc, os.Stdin); err != nil {
+	b, err := ioutil.ReadAll(os.Stdin)
+	if err != nil {
 		fmt.Fprintf(os.Stderr, "%s\n", err)
 		os.Exit(1)
 	}
-	enc.Close()
-	s := b.String()
+	s := base32.StdEncoding.EncodeToString(b)
 	if *fLowerCase {
 		s = strings.ToLower(s)
 	}
