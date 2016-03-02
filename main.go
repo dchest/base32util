@@ -15,7 +15,14 @@ import (
 var (
 	fLowerCase   = flag.Bool("l", false, "lower case")
 	fTrimPadding = flag.Bool("p", false, "remove padding")
+	fAlphabet    = flag.String("a", "", `alphabet ("" = standard, "hex", "zooko", or alphabet characters)`)
 )
+
+var encodings = map[string]*base32.Encoding{
+	"":      base32.StdEncoding,
+	"hex":   base32.HexEncoding,
+	"zooko": base32.NewEncoding("YBNDRFG8EJKMCPQXOT1UWISZA345H769"),
+}
 
 func main() {
 	flag.Parse()
@@ -24,7 +31,16 @@ func main() {
 		fmt.Fprintf(os.Stderr, "%s\n", err)
 		os.Exit(1)
 	}
-	s := base32.StdEncoding.EncodeToString(b)
+	alpha := *fAlphabet
+	enc, ok := encodings[alpha]
+	if !ok {
+		if len(alpha) != 32 {
+			fmt.Fprintf(os.Stderr, "unknown alphabet: %s\n", alpha)
+			os.Exit(2)
+		}
+		enc = base32.NewEncoding(alpha)
+	}
+	s := enc.EncodeToString(b)
 	if *fLowerCase {
 		s = strings.ToLower(s)
 	}
