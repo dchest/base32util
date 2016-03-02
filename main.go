@@ -16,6 +16,8 @@ var (
 	fLowerCase   = flag.Bool("l", false, "lower case")
 	fTrimPadding = flag.Bool("p", false, "remove padding")
 	fAlphabet    = flag.String("a", "", `alphabet ("" = standard, "hex", "zooko", or alphabet characters)`)
+	fGroup       = flag.Int("g", 0, "split into groups of N characters")
+	fGroupSep    = flag.String("gs", " ", "group separator for -g option")
 )
 
 var encodings = map[string]*base32.Encoding{
@@ -46,6 +48,17 @@ func main() {
 	}
 	if *fTrimPadding {
 		s = strings.TrimRight(s, "=")
+	}
+	g := *fGroup
+	if g > 0 {
+		rs := ""
+		for i, r := range s {
+			if i > 0 && i%g == 0 {
+				rs += *fGroupSep
+			}
+			rs += string(r)
+		}
+		s = rs
 	}
 	fmt.Println(s)
 }
