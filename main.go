@@ -13,6 +13,7 @@ import (
 )
 
 var (
+	fDecode      = flag.Bool("d", false, "decode")
 	fLowerCase   = flag.Bool("l", false, "lower case")
 	fTrimPadding = flag.Bool("p", false, "remove padding")
 	fAlphabet    = flag.String("a", "", `alphabet ("" = standard, "hex", "zooko", or alphabet characters)`)
@@ -42,6 +43,20 @@ func main() {
 		}
 		enc = base32.NewEncoding(alpha)
 	}
+
+	if *fDecode {
+		b, err := enc.DecodeString(string(b))
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "error decoding: %s\n", err)
+			os.Exit(3)
+		}
+		if _, err := os.Stdout.Write(b); err != nil {
+			fmt.Fprintf(os.Stderr, "error writing: %s\n", err)
+			os.Exit(4)
+		}
+		return
+	}
+
 	s := enc.EncodeToString(b)
 	if *fLowerCase {
 		s = strings.ToLower(s)
