@@ -45,12 +45,13 @@ func main() {
 	}
 
 	if *fDecode {
-		b, err := enc.DecodeString(string(b))
+		d, err := enc.DecodeString(strings.ToUpper(string(b)))
 		if err != nil {
+			fmt.Println(string(b))
 			fmt.Fprintf(os.Stderr, "error decoding: %s\n", err)
 			os.Exit(3)
 		}
-		if _, err := os.Stdout.Write(b); err != nil {
+		if _, err := os.Stdout.Write(d); err != nil {
 			fmt.Fprintf(os.Stderr, "error writing: %s\n", err)
 			os.Exit(4)
 		}
