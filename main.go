@@ -23,9 +23,10 @@ var (
 )
 
 var encodings = map[string]*base32.Encoding{
-	"":      base32.StdEncoding,
-	"hex":   base32.HexEncoding,
-	"zooko": base32.NewEncoding("YBNDRFG8EJKMCPQXOT1UWISZA345H769"),
+	"":         base32.StdEncoding,
+	"hex":      base32.HexEncoding,
+	"zooko":    base32.NewEncoding("YBNDRFG8EJKMCPQXOT1UWISZA345H769"),
+	"dnscurve": base32.NewEncoding("0123456789BCDFGHJKLMNPQRSTUVWXYZ"),
 }
 
 func main() {
