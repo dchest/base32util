@@ -15,6 +15,7 @@ import (
 var (
 	fDecode      = flag.Bool("d", false, "decode")
 	fLowerCase   = flag.Bool("l", false, "lower case")
+	fNoNewLine   = flag.Bool("n", false, "do not print the trailing newline character")
 	fTrimPadding = flag.Bool("p", false, "remove padding")
 	fAlphabet    = flag.String("a", "", `alphabet ("" = standard, "hex", "zooko", or alphabet characters)`)
 	fGroup       = flag.Int("g", 0, "split into groups of N characters")
@@ -76,5 +77,8 @@ func main() {
 		}
 		s = rs
 	}
-	fmt.Println(s)
+	fmt.Print(s)
+	if !*fNoNewLine {
+		fmt.Print("\n")
+	}
 }
